@@ -23,20 +23,20 @@ mod tests {
 
     #[test]
     fn decryption_test() {
-        let result = decrypt("Zw~~2i~v18".to_string());
-        assert_eq!(result, "Hello World\r\n");
+        let result = decrypt("g?v".to_string());
+        assert_eq!(result, "Hello World");
     }
 
     #[test]
     fn special_characters_decrypt_test() {
-        let result = decrypt("181P:533DHIAD16".to_string());
-        assert_eq!(result, "!(!@*%##48914\r\n");
+        let result = decrypt("DKDcMHFFW[\\TW#".to_string());
+        assert_eq!(result, "!(!@*%##48914");
     }
 
     #[test]
     fn emoji_decrypt_test() {
-        let result = decrypt("😌😁😋01".to_string());
-        assert_eq!(result, "😋😀😊\r\n");
+        let result = decrypt("😴😩😳)".to_string());
+        assert_eq!(result, "😋😀😊");
     }
 
 }
