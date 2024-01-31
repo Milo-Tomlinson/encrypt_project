@@ -6,6 +6,7 @@ mod decrypt;
 use encrypt::{encrypt};
 
 use std::io;
+use decrypt::decrypt;
 
 fn main() {
     //The user types in the message that they would like to encrypt
@@ -15,12 +16,13 @@ fn main() {
 
     //The encrypt method is called with a clone of the message so it can encrypt
     let encrypt_mess = encrypt(message.clone());
-    println!("Original: {}\nEncrypt: {}", message, encrypt_mess);
+    let decrypt_mess = decrypt(encrypt_mess.clone());
+    println!("Original: {}\nEncrypt: {}\nDecrypt: {}", message, encrypt_mess, decrypt_mess);
 
     // This is here so the file doesn't close after completing until user is ready
     println!("press enter to quit");
     io::stdin().read_line(&mut message).expect("Failed to read line");
-
+    println!("test {}", 'c' as i32);
 }
 
 
