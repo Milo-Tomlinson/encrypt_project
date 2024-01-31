@@ -10,20 +10,37 @@ use std::io;
 
 
 fn main() {
-    //The user types in the message that they would like to encrypt
-    let mut message = String::new();
-    println!("Please type your message to be encrypted: ");
-    io::stdin().read_line(&mut message).expect("Failed to read line");
+    println!("Hi welcome to my Encryption and Decryption program!");
+    let mut option:String = String::new();
+    while !option.starts_with("3") {
+        option = String::new();
+        println!("Please enter the option you would like to do:\n1. Encryption of a message\n2. Decryption of a message\n3. Quit");
+        io::stdin().read_line(&mut option).expect("Failed to read line");
 
-    //The encrypt method is called with a clone of the message so it can encrypt
-    let encrypt_mess = encrypt(message.clone());
-    let decrypt_mess = decrypt(encrypt_mess.clone());
-    println!("Original: {}\nEncrypt: {}\nDecrypt: {}", message, encrypt_mess, decrypt_mess);
-    cli_clipboard::set_contents(encrypt_mess).unwrap();
-    // This is here so the file doesn't close after completing until user is ready
-    println!("press enter to quit");
-    io::stdin().read_line(&mut message).expect("Failed to read line");
-    println!("test {}", 'c' as i32);
+        if option.starts_with('1') { // Encryption
+            let mut message = String::new();
+            println!("Please type your message to be encrypted: ");
+            io::stdin().read_line(&mut message).expect("Failed to read line");
+            let encrypt_mess = encrypt(message.clone().trim_end().to_string());
+            println!("Encrypted Message: {}", encrypt_mess);
+            cli_clipboard::set_contents(encrypt_mess).unwrap();
+        }
+        else if option.starts_with('2') {
+            let mut message = String::new();
+            println!("Please type your message to be decrypted: ");
+            io::stdin().read_line(&mut message).expect("Failed to read line");
+            let decrypt_mess = decrypt(message.clone().trim_end().to_string());
+            println!("Decrypted Message: {}", decrypt_mess);
+            cli_clipboard::set_contents(decrypt_mess).unwrap();
+        }
+        else if option.starts_with('3') {
+            println!("Thank you for using my Encryption and Decryption program!\n");
+        }
+        else{
+            println!("Please type in a valid option ex: \"1\" without the quotes");
+        }
+    }
+    io::stdin().read_line(&mut option).expect("Failed to read line");
 }
 
 
