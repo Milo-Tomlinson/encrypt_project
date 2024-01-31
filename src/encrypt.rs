@@ -6,8 +6,6 @@ pub fn encrypt(message: String) -> String {
 
     let random_number: i32 = rng.gen_range(1..=64);
 
-    println!("This is the random number: {}", random_number);
-
     let mut char_array: Vec<char> = message.chars().collect();
     for character in char_array.iter_mut() {
         *character = char_adder(*character, random_number);
@@ -15,12 +13,8 @@ pub fn encrypt(message: String) -> String {
 
     let encrypt_mess:String = char_array.into_iter().collect();
     let result:String;
-    if random_number < 10 {
-        result = format!("{}0{}", encrypt_mess, random_number);
-    }
-    else{
-        result = format!("{}{}", encrypt_mess, random_number);
-    }
+
+    result = format!("{}{}", encrypt_mess, (random_number as u8) as char);
 
 
     result
