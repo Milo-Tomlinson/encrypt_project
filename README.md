@@ -4,5 +4,8 @@
 
 ## Planned Features
 - Improving the encryption
-- Adding UI
 - Adding the ability to view previous encrypted and decrypted messages
+
+## Current Features
+- Ability to Encrypt and Decrypt any phrase that uses unicode characters
+- Easy to use graphical user interface
