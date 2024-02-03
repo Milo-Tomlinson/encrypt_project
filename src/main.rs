@@ -4,44 +4,34 @@ mod encrypt;
 mod decrypt;
 
 
+
 use encrypt::encrypt;
 use decrypt::decrypt;
-use std::io;
+
+slint::include_modules!();
+
+pub fn main() -> Result<(), slint::PlatformError> {
+    let ui = AppWindow::new()?;
+    
+    ui.on_encryption({
+        let ui_handle = ui.as_weak();
+        move |msg| {
+            let ui = ui_handle.unwrap();
+            let encrypt_message = encrypt(msg.trim_end().to_string());
+            cli_clipboard::set_contents(encrypt_message.clone()).unwrap();
+            ui.set_output(encrypt_message.into());
+        }
+    });
+    ui.on_decryption({
+        let ui_handle = ui.as_weak();
+        move |msg| {
+            let ui = ui_handle.unwrap();
+            let decrypt_message = decrypt(msg.trim_end().to_string());
+            cli_clipboard::set_contents(decrypt_message.clone()).unwrap();
+            ui.set_output(decrypt_message.into());
+        }
+    });
 
 
-fn main() {
-    println!("Hi welcome to my Encryption and Decryption program!");
-    let mut option:String = String::new();
-    while !option.starts_with("3") {
-        option = String::new();
-        println!("Please enter the option you would like to do:\n1. Encryption of a message\n2. Decryption of a message\n3. Quit");
-        io::stdin().read_line(&mut option).expect("Failed to read line");
-
-        if option.starts_with('1') { // Encryption
-            let mut message = String::new();
-            println!("Please type your message to be encrypted: ");
-            io::stdin().read_line(&mut message).expect("Failed to read line");
-            let encrypt_mess = encrypt(message.clone().trim_end().to_string());
-            println!("Encrypted Message: {}", encrypt_mess);
-            cli_clipboard::set_contents(encrypt_mess).unwrap();
-        }
-        else if option.starts_with('2') {
-            let mut message = String::new();
-            println!("Please type your message to be decrypted: ");
-            io::stdin().read_line(&mut message).expect("Failed to read line");
-            let decrypt_mess = decrypt(message.clone().trim_end().to_string());
-            println!("Decrypted Message: {}", decrypt_mess);
-            cli_clipboard::set_contents(decrypt_mess).unwrap();
-        }
-        else if option.starts_with('3') {
-            println!("Thank you for using my Encryption and Decryption program!\n");
-        }
-        else{
-            println!("Please type in a valid option ex: \"1\" without the quotes");
-        }
-    }
-    io::stdin().read_line(&mut option).expect("Failed to read line");
+    ui.run()
 }
-
-
-

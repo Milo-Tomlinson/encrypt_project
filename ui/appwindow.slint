@@ -1,0 +1,94 @@
+import { Button, VerticalBox, HorizontalBox, LineEdit } from "std-widgets.slint";
+
+export component AppWindow inherits Window {
+    width: 800px;
+    height: 600px;
+    in-out property <string> output: "";
+    property <bool> encrypt: false;
+    property <bool> decrypt: false;
+    callback encryption(string);
+    callback decryption(string);
+    GridLayout {
+        //spacing: 50px;
+        Row {
+            Text {
+                text: "Milo Tomlinson's Encryption and Decryption Project";
+                font-size: 32px;
+                font-weight: 500;
+            }
+        }
+        Row {
+            HorizontalBox {
+                height: 50px;
+                Button {
+                    text: "Encryption";
+                    clicked => { 
+                        encrypt = true;
+                        decrypt = false;
+                    }
+                }
+                Button {
+                    text: "Decryption";
+                    clicked => { 
+                        encrypt = false;
+                        decrypt = true;
+                    }
+                }
+                if (encrypt || decrypt): Button{
+                    text: "Back";
+                    clicked => { 
+                        encrypt = false;
+                        decrypt = false;
+                    }
+                }
+            }
+        }
+        Row {
+            VerticalBox {
+                if (encrypt || decrypt): VerticalLayout{
+                    message := LineEdit {
+                        font-size: 14px;
+                        width: 90%;
+                        height: 20%;
+                        placeholder-text: "Type your message here";
+                    }
+                    if(encrypt && !decrypt): Button {
+                        text: "Encrypt Message";
+                        primary: true;
+                        clicked => { 
+                            encryption(message.text)
+                        }
+                    }
+                    if(!encrypt && decrypt): Button {
+                        text: "Decrypt Message";
+                        primary: true;
+                        clicked => { 
+                            decryption(message.text)
+                        }
+                    }
+                } 
+                
+                Text {
+                    text: "This program will encrypt and decrpyt messages included any unicode character.\nThis means you can encrypt messsages including emojis and any other character you want. 😁";
+                    font-size: 18px;
+                }
+            }
+        }
+        Row {
+            Rectangle {
+                background: #e8feda;
+                msg := TextInput {
+                    color: black;
+                    font-size: 18px;
+                    text:root.output;
+                }
+            }
+        }
+        Row{
+            Button {
+                text: "Copy";
+                clicked => {msg.copy();}
+            }
+        }
+    }
+}
